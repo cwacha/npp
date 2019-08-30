@@ -23,6 +23,8 @@ function import {
 	
 	Expand-Archive -Path ..\ext\*.zip -DestinationPath BUILD/root
 	cp -r -fo ..\src\* BUILD/root
+    cp BUILD/root/stylers.model.xml BUILD/root/themes/default.xml
+    cp BUILD/root/themes/Monokai_2.xml BUILD/root/stylers.model.xml
 }
 
 function pkg {
