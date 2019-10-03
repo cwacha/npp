@@ -4,12 +4,16 @@
 }
 
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
-# & $toolsDir\control.cmd remove
+$startmenudir = "$env:AppData"
+$shellmenudir = "HKCU:"
 
 if(isAdmin) {
-	"Removing Right-click shell action"
-	Remove-Item -Recurse -LiteralPath 'HKLM:\Software\Classes\*\shell\Edit with Notepad++'
-
-	"Removing Start Menu entry"
-	rm -fo -ea SilentlyContinue "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Notepad++.lnk"
+	$shellmenudir = "HKLM:"
+	$startmenudir = "$env:ProgramData"
 }
+
+"Removing Right-click shell action"
+Remove-Item -Recurse -LiteralPath "$shellmenudir\Software\Classes\*\shell\Edit with Notepad++"
+
+"Removing Start Menu entry"
+rm -fo -ea SilentlyContinue "$startmenudir\Microsoft\Windows\Start Menu\Programs\Notepad++.lnk"
