@@ -15,7 +15,7 @@ function all {
 function _init {
 	$global:app_pkgid = "npp"
 	$global:app_version = Get-ChildItem $BASEDIR\..\ext\*.zip | %{$_.Name -replace "npp.", "" -replace ".zip", "" -replace ".bin.*", ""}
-    $global:app_revision = (git log --pretty=oneline).count
+    $global:app_revision = (git log (git describe --tags --abbrev=0)..HEAD --oneline).count
     $global:app_build = git rev-parse --short HEAD
 
 	$global:app_pkgname = "$app_pkgid-$app_version-$app_revision-$app_build"
