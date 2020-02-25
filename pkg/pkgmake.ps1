@@ -66,7 +66,7 @@ function nupkg {
     #rm -r -fo -ea SilentlyContinue BUILD\root
     cp -r -fo nupkg PKG
     cp -r -fo BUILD\* PKG\nupkg\tools
-    _template nupkg\package.nuspec > PKG\nupkg\$app_pkgid.nuspec
+    _template nupkg\package.nuspec | Out-File -Encoding "UTF8" PKG\nupkg\$app_pkgid.nuspec
     rm PKG\nupkg\package.nuspec
     cd PKG\nupkg
     choco pack -outputdirectory $BASEDIR\PKG
