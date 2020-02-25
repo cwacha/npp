@@ -1,6 +1,6 @@
 ﻿function isAdmin() {
-	$currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
-	$currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+    $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 }
 
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
@@ -8,8 +8,8 @@ $startmenudir = "$env:AppData"
 $shellmenudir = "HKCU:"
 
 if(isAdmin) {
-	$shellmenudir = "HKLM:"
-	$startmenudir = "$env:ProgramData"
+    $shellmenudir = "HKLM:"
+    $startmenudir = "$env:ProgramData"
 }
 
 "Removing Right-click shell action"
