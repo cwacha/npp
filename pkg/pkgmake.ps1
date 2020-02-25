@@ -49,7 +49,7 @@ function import {
 
 function pkg {
     "# packaging ..."
-    mkdir PKG > $null
+    mkdir PKG *> $null
     
     cd BUILD
     Compress-Archive -Path root\* -DestinationPath ..\PKG\$app_pkgname.zip
