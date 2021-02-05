@@ -4,8 +4,8 @@
     - choco
 
 build-job:
-  stage: build
   extends: .init
+  stage: build
   script:
     - ./pkg/pkgmake.ps1 all
     - cd ..
@@ -17,8 +17,8 @@ build-job:
     expire_in: 1 week
 
 deploy-job:
-  stage: deploy
   extends: .init
+  stage: deploy
   script:
     - $file = $(ls *.nupkg)
     - $package = "$(($file.Basename -split '\.',2)[0])"
@@ -28,4 +28,10 @@ deploy-job:
     - Write-Host "$([pscustomobject]@{'package' = $package; 'version' = $version} | fl | Out-String)"
     - '[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"'
     - 'Invoke-WebRequest -UseBasicParsing -Method PUT -Headers @{"JOB-TOKEN" = $CI_JOB_TOKEN} -InFile $($file.Fullname) -Uri $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/$package/$version/$($file.Name)'
+
+push-job:
+  extends: .init
+  stage: deploy
+  script:
+    - choco push -s https://adchoco.ubseng.net/dev/chocolatey
 
