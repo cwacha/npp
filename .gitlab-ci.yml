@@ -1,0 +1,31 @@
+.init:
+  tags:
+    - windows
+    - choco
+
+build-job:
+  stage: build
+  extends: .init
+  script:
+    - ./pkg/pkgmake.ps1 all
+    - cd ..
+    - cp .\pkg\PKG\*.nupkg .
+  artifacts:
+    name: "$((ls *.nupkg).Name)"
+    paths:
+      - ./*.nupkg
+    expire_in: 1 week
+
+deploy-job:
+  stage: deploy
+  extends: .init
+  script:
+    - $file = $(ls *.nupkg)
+    - $package = "$(($file.Basename -split '\.',2)[0])"
+    - $version = "$(($file.Basename -split '\.',2)[1])"
+    - $version = ($version -split '\.' | Select -First 3) -join '.'
+    - Write-Host "$($file | select Fullname, Name, Basename | fl | Out-String)"
+    - Write-Host "$([pscustomobject]@{'package' = $package; 'version' = $version} | fl | Out-String)"
+    - '[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"'
+    - 'Invoke-WebRequest -UseBasicParsing -Method PUT -Headers @{"JOB-TOKEN" = $CI_JOB_TOKEN} -InFile $($file.Fullname) -Uri $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/$package/$version/$($file.Name)'
+
