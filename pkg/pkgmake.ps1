@@ -16,7 +16,7 @@ function all {
 function _init {
     $global:app_pkgid = "npp"
     $global:app_displayname = "Notepad++"
-    $global:app_version = Get-ChildItem $BASEDIR\..\ext\*.zip | %{$_.Name -replace "npp.", "" -replace ".zip", "" -replace ".bin.*", ""}
+    $global:app_version = Get-ChildItem $BASEDIR\..\ext\*.zip | %{$_.Name -replace "npp.", "" -replace ".zip", "" -replace ".portable.*", ""}
     $global:app_revision = (git describe --tags --abbrev=0 | %{git log "$_..HEAD" --oneline}).count
     $global:app_build = git rev-parse --short HEAD
 
