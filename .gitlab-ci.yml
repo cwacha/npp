@@ -33,5 +33,5 @@ push-job:
   extends: .init
   stage: deploy
   script:
-    - choco push -s https://adchoco.ubseng.net/dev/chocolatey
+    - choco push -s $AD_CHOCO_PUSH_URL
 
