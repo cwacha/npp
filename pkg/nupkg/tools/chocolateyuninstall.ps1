@@ -3,11 +3,11 @@
     $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 }
 
-$toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
+$toolsDir = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 $startmenudir = "$env:AppData"
 $shellmenudir = "HKCU:"
 
-if(isAdmin) {
+if (isAdmin) {
     $shellmenudir = "HKLM:"
     $startmenudir = "$env:ProgramData"
 }
@@ -17,3 +17,7 @@ Remove-Item -Recurse -LiteralPath "$shellmenudir\Software\Classes\*\shell\Edit w
 
 "Removing Start Menu entry"
 rm -fo -ea SilentlyContinue "$startmenudir\Microsoft\Windows\Start Menu\Programs\Notepad++.lnk"
+
+"Removing ShimGens"
+Uninstall-BinFile -Name npp-menu
+Uninstall-BinFile -Name npp
